@@ -6,7 +6,6 @@ using System.IO;
 
 using Discord;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace YahurrBot
 {
@@ -18,7 +17,9 @@ namespace YahurrBot
         }
 
         DiscordClient client;
+
         BoyPoints boyBot;
+        GameCounter gameCounter;
 
         public void Start ()
         {
@@ -35,30 +36,52 @@ namespace YahurrBot
                 }
             };
 
+            client.ProfileUpdated += ( s, p ) =>
+            {
+                gameCounter.ProfileUpdate (p);
+            };
+
             client.ExecuteAndWait (async () =>
             {
                 Console.WriteLine ("Connect to discord...");
 
-                await client.Connect ("MjI4NDYzNTEyMzQ1NzcyMDMy.CsV8lg.pDTRN0u3TP0X19On5jiuRR1TBd0", TokenType.Bot);
+                await client.Connect ("MjI4NDYzNTEyMzQ1NzcyMDMy.Csxslw.0Khe_VrvEdR86XWtx4I5lUnArKU", TokenType.Bot);
 
-                Console.WriteLine ("Bot is connected with key: MjI4NDYzNTEyMzQ1NzcyMDMy.CsV8lg.pDTRN0u3TP0X19On5jiuRR1TBd0.");
+                // Waits for client to fully load.
+                await Task.Run (() =>
+                {
+                    while (true)
+                    {
+                        if (client.Servers.Count () > 0 && client.Servers.First().UserCount > 3)
+                        {
+                            break;
+                        }
+                    }
+                });
+
+                Console.WriteLine ("Bot is connected with key: MjI4NDYzNTEyMzQ1NzcyMDMy.CsxZjg.ilg6p_QgxMCC7t-9IMcc5uyl_6Q.");
                 Console.WriteLine ("");
-
-                Console.WriteLine ("Loading goodboy points...");
-
-                await Task.Run (() => { boyBot.LoadPoints (); });
-
-                Console.WriteLine ("Goodboy points loaded.");
-                Console.WriteLine ("");
-
-                Console.WriteLine ("Loading modules...");
 
                 await Task.Run (() =>
                 {
+
+                    Console.WriteLine ("Loading modules...");
+
                     boyBot = new BoyPoints (client);
+                    gameCounter = new GameCounter (client);
+
+                    Console.WriteLine ("Modules loaded.");
                 });
 
-                Console.WriteLine ("Modules loaded.");
+                await Task.Run (() =>
+                {
+                    Console.WriteLine ("Loading goodboy points...");
+
+                    boyBot.LoadPoints ();
+
+                    Console.WriteLine ("Goodboy points loaded.");
+                    Console.WriteLine ("");
+                });
 
                 while (true)
                 {
@@ -66,93 +89,20 @@ namespace YahurrBot
                     string[] commands = message.Split (' ');
 
                     boyBot.ParseConsoleCommands (commands);
+
+                    switch (commands[0])
+                    {
+                        case "test":
+                            Console.WriteLine (client.Servers.First().UserCount);
+                            break;
+                        case "setgame":
+                            client.SetGame (new Discord.Game (commands[1].Replace('-',' ')));
+                            break;
+                        default:
+                            break;
+                    }
                 }
             });
-
-        }
-    }
-
-    class BoyStatus
-    {
-        [JsonIgnore]
-        public User user;
-        public string userName;
-
-        int boyPoints;
-        [JsonProperty ("points")]
-        public int points
-        {
-            get
-            {
-                return boyPoints;
-            }
-        }
-
-        int left = 3;
-        [JsonProperty ("toSend")]
-        public int toSend
-        {
-            get
-            {
-                return left;
-            }
-        }
-
-        public BoyStatus ( User user )
-        {
-            this.user = user;
-            userName = user.Name;
-        }
-
-        public BoyStatus ( Server server, string userName, int points, int toSend )
-        {
-            boyPoints = points;
-            left = toSend;
-            this.userName = userName;
-
-            user = server.FindUsers (userName).First ();
-        }
-
-        public void UpdateUser ( Server server )
-        {
-            user = server.FindUsers (userName).First ();
-        }
-
-        public void Update ()
-        {
-            if (boyPoints > 0)
-            {
-                Role role = user.Server.FindRoles ("Good boy").First ();
-                Console.WriteLine (role.Name);
-                user.AddRoles (role);
-                //user.RemoveRoles (user.Server.FindRoles ("Bad boy").First ());
-            }
-            else if (boyPoints < 0)
-            {
-                user.AddRoles (user.Server.FindRoles ("Bad boy").First ());
-                //user.RemoveRoles (user.Server.FindRoles ("Good boy").First ());
-            }
-        }
-
-        public void AddPoint ()
-        {
-            if (left > 0)
-            {
-                boyPoints++;
-            }
-        }
-
-        public void RemovePoint ()
-        {
-            if (left > 0)
-            {
-                boyPoints--;
-            }
-        }
-
-        public void SpendToSend ()
-        {
-            left--;
         }
     }
 }

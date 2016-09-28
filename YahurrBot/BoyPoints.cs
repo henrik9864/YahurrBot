@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using System.Threading.Tasks;
 
 using Discord;
 
@@ -20,7 +21,6 @@ namespace YahurrBot
         public BoyPoints ( DiscordClient client )
         {
             this.client = client;
-            Console.WriteLine (client);
         }
 
         /// <summary>
@@ -81,7 +81,6 @@ namespace YahurrBot
         public void LoadPoints ()
         {
             JArray j = (JArray)JsonConvert.DeserializeObject (File.ReadAllText (path + "/Files/Saves.txt", System.Text.Encoding.UTF8));
-
             List<BoyStatus> newUsers = new List<BoyStatus> ();
 
             for (int i = 0; i < j.Count; i++)
@@ -165,6 +164,97 @@ namespace YahurrBot
             }
 
             return status;
+        }
+    }
+
+    class BoyStatus
+    {
+        [JsonIgnore]
+        public User user;
+        public string userName;
+
+        int boyPoints;
+        [JsonProperty ("points")]
+        public int points
+        {
+            get
+            {
+                return boyPoints;
+            }
+        }
+
+        int left = 3;
+        [JsonProperty ("toSend")]
+        public int toSend
+        {
+            get
+            {
+                return left;
+            }
+        }
+
+        public BoyStatus ( User user )
+        {
+            this.user = user;
+            userName = user.Name;
+        }
+
+        public BoyStatus ( Server server, string userName, int points, int toSend )
+        {
+            boyPoints = points;
+            left = toSend;
+            this.userName = userName;
+
+            IEnumerable<User> found = server.FindUsers (userName);
+
+            if (found.Count () > 0)
+            {
+                user = found.First ();
+            }
+            else
+                Console.WriteLine ("Warning unable to find user: " + userName);
+        }
+
+        public void UpdateUser ( Server server )
+        {
+            user = server.FindUsers (userName).First ();
+        }
+
+        public void Update ()
+        {
+            if (boyPoints > 0)
+            {
+                Role role = user.Server.FindRoles ("Good boy").First ();
+                Console.WriteLine (role.Name);
+                user.AddRoles (role);
+                //user.RemoveRoles (user.Server.FindRoles ("Bad boy").First ());
+            }
+            else if (boyPoints < 0)
+            {
+                user.AddRoles (user.Server.FindRoles ("Bad boy").First ());
+                //user.RemoveRoles (user.Server.FindRoles ("Good boy").First ());
+            }
+        }
+
+        public void AddPoint ()
+        {
+            if (left > 0)
+            {
+                boyPoints++;
+            }
+        }
+
+        public void RemovePoint ()
+        {
+            if (left > 0)
+            {
+                boyPoints--;
+            }
+        }
+
+        public void SpendToSend ()
+        {
+            left--;
         }
     }
 }
