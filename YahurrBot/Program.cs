@@ -19,6 +19,7 @@ namespace YahurrBot
 
         DiscordClient client;
         BoyPoints boyBot;
+        UselessInteractions interactBot;
 
         public void Start ()
         {
@@ -32,6 +33,7 @@ namespace YahurrBot
                     string[] commdands = message.ToLower ().Split (' ');
 
                     boyBot.ParseCommands (commdands, e);
+                    interactBot.ParseCommands(commdands, e);
                 }
             };
 
@@ -56,6 +58,7 @@ namespace YahurrBot
                 await Task.Run (() =>
                 {
                     boyBot = new BoyPoints (client);
+                    interactBot = new UselessInteractions();    
                 });
 
                 Console.WriteLine ("Modules loaded.");
