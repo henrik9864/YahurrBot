@@ -74,3 +74,6 @@ C:\Users\be26089803\Dropbox\Git\YahurrBotRepo\YahurrBot\bin\Debug\Nito.AsyncEx.C
 C:\Users\be26089803\Dropbox\Git\YahurrBotRepo\YahurrBot\bin\Debug\Nito.AsyncEx.Enlightenment.xml
 C:\Users\be26089803\Dropbox\Git\YahurrBotRepo\YahurrBot\bin\Debug\RestSharp.xml
 C:\Users\be26089803\Dropbox\Git\YahurrBotRepo\YahurrBot\obj\Debug\YahurrBot.csprojResolveAssemblyReference.cache
+C:\Users\be09049802\Documents\YahurrBot\YahurrBot\bin\Debug\YahurrBot.exe.config
+C:\Users\be09049802\Documents\YahurrBot\YahurrBot\obj\Debug\YahurrBot.exe
+C:\Users\be09049802\Documents\YahurrBot\YahurrBot\obj\Debug\YahurrBot.pdb
