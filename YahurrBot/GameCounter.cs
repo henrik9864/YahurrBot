@@ -18,14 +18,35 @@ namespace YahurrBot
             this.client = client;
         }
 
-        public void ProfileUpdate ( ProfileUpdatedEventArgs profile )
+        public void ProfileUpdate ( UserUpdatedEventArgs profile )
         {
             Profile user = FindProfile (profile.After.Name);
 
-            Console.WriteLine (profile.After.CurrentGame);
-
-            //user.FindGame (profile.After.CurrentGame.GetValueOrDefault ());
+            user.FindGame (profile.After.CurrentGame.ToString());
         }
+
+        public void ParseConsoleCommands ( string[] commdands )
+        {
+            switch (commdands[0])
+            {
+                case "playgame":
+                    Profile user = FindProfile (commdands[1]);
+
+                    Game game = user.FindGame (commdands[2]);
+                    game.StartPlaying ();
+                    break;
+                case "stopgame":
+                    Profile u = FindProfile (commdands[1]);
+
+                    Game g = u.FindGame (commdands[2]);
+                    g.StopPlaying ();
+
+                    break;
+                default:
+                    break;
+            }
+        }
+
 
         Profile FindProfile ( string name )
         {
@@ -84,12 +105,12 @@ namespace YahurrBot
             }
         }
 
-        float gameHours;
-        public float hours
+        TimeSpan gameTime;
+        public TimeSpan timePlayed
         {
             get
             {
-                return gameHours;
+                return gameTime;
             }
         }
 
@@ -102,12 +123,33 @@ namespace YahurrBot
             }
         }
 
+        public DateTime session
+        {
+            get
+            {
+                return DateTime.Now.Subtract (gameTime);
+            }
+        }
+
         public DateTime time;
-        public float session;
 
         public Game ( string name )
         {
             gameName = name;
+        }
+
+        public void StartPlaying ()
+        {
+            playingGame = true;
+            time = DateTime.Now;
+        }
+
+        public void StopPlaying ()
+        {
+            playingGame = false;
+
+            TimeSpan span = DateTime.Now.Subtract (time);
+            gameTime.Add (span);
         }
     }
 }

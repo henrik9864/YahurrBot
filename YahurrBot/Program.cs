@@ -36,7 +36,7 @@ namespace YahurrBot
                 }
             };
 
-            client.ProfileUpdated += ( s, p ) =>
+            client.UserUpdated += ( s, p ) =>
             {
                 gameCounter.ProfileUpdate (p);
             };
@@ -69,6 +69,7 @@ namespace YahurrBot
 
                     boyBot = new BoyPoints (client);
                     gameCounter = new GameCounter (client);
+                    bah = new bah ();
 
                     Console.WriteLine ("Modules loaded.");
                 });
@@ -89,6 +90,7 @@ namespace YahurrBot
                     string[] commands = message.Split (' ');
 
                     boyBot.ParseConsoleCommands (commands);
+                    gameCounter.ParseConsoleCommands (commands);
 
                     switch (commands[0])
                     {
