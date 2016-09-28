@@ -20,6 +20,7 @@ namespace YahurrBot
 
         BoyPoints boyBot;
         GameCounter gameCounter;
+        UselessInteraction uselessInteraction;
 
         public void Start ()
         {
@@ -33,10 +34,11 @@ namespace YahurrBot
                     string[] commdands = message.ToLower ().Split (' ');
 
                     boyBot.ParseCommands (commdands, e);
+                    uselessInteraction.ParseCommands(commdands, e);
                 }
             };
 
-            client.UserUpdated += ( s, p ) =>
+            client.ProfileUpdated += ( s, p ) =>
             {
                 gameCounter.ProfileUpdate (p);
             };
@@ -69,7 +71,7 @@ namespace YahurrBot
 
                     boyBot = new BoyPoints (client);
                     gameCounter = new GameCounter (client);
-                    bah = new bah ();
+                    uselessInteraction = new UselessInteraction();
 
                     Console.WriteLine ("Modules loaded.");
                 });
@@ -90,7 +92,6 @@ namespace YahurrBot
                     string[] commands = message.Split (' ');
 
                     boyBot.ParseConsoleCommands (commands);
-                    gameCounter.ParseConsoleCommands (commands);
 
                     switch (commands[0])
                     {
