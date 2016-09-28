@@ -34,11 +34,12 @@ namespace YahurrBot
                     string[] commdands = message.ToLower ().Split (' ');
 
                     boyBot.ParseCommands (commdands, e);
-                    uselessInteraction.ParseCommands(commdands, e);
+                    uselessInteraction.ParseCommands (commdands, e);
+                    gameCounter.ParseCommands (commdands, e);
                 }
             };
 
-            client.ProfileUpdated += ( s, p ) =>
+            client.UserUpdated += ( s, p ) =>
             {
                 gameCounter.ProfileUpdate (p);
             };
@@ -54,7 +55,7 @@ namespace YahurrBot
                 {
                     while (true)
                     {
-                        if (client.Servers.Count () > 0 && client.Servers.First().UserCount > 3)
+                        if (client.Servers.Count () > 0 && client.Servers.First ().UserCount > 3)
                         {
                             break;
                         }
@@ -71,18 +72,19 @@ namespace YahurrBot
 
                     boyBot = new BoyPoints (client);
                     gameCounter = new GameCounter (client);
-                    uselessInteraction = new UselessInteraction();
+                    uselessInteraction = new UselessInteraction ();
 
                     Console.WriteLine ("Modules loaded.");
                 });
 
                 await Task.Run (() =>
                 {
-                    Console.WriteLine ("Loading goodboy points...");
+                    Console.WriteLine ("Loading classes...");
 
                     boyBot.LoadPoints ();
+                    gameCounter.LoadPoints ();
 
-                    Console.WriteLine ("Goodboy points loaded.");
+                    Console.WriteLine ("Classes loaded.");
                     Console.WriteLine ("");
                 });
 
@@ -92,14 +94,15 @@ namespace YahurrBot
                     string[] commands = message.Split (' ');
 
                     boyBot.ParseConsoleCommands (commands);
+                    gameCounter.ParseConsoleCommands (commands);
 
                     switch (commands[0])
                     {
                         case "test":
-                            Console.WriteLine (client.Servers.First().UserCount);
+                            Console.WriteLine (client.Servers.First ().UserCount);
                             break;
                         case "setgame":
-                            client.SetGame (new Discord.Game (commands[1].Replace('-',' ')));
+                            client.SetGame (new Discord.Game (commands[1].Replace ('-', ' ')));
                             break;
                         default:
                             break;

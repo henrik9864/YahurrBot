@@ -75,7 +75,6 @@ namespace YahurrBot
             string json = JsonConvert.SerializeObject (users.ToArray (), Formatting.None);
 
             File.WriteAllText (path + "/Files/Saves.txt", json, System.Text.Encoding.UTF8);
-
         }
 
         public void LoadPoints ()
