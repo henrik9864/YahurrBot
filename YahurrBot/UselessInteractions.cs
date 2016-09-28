@@ -17,6 +17,8 @@ namespace YahurrBot
                 case "hei":
                     e.Channel.SendMessage("Hei, " + e.User.Mention + "!");
                     break;
+                case null:
+                    break;
                 default:
                     break;
             }
