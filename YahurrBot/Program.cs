@@ -71,7 +71,7 @@ namespace YahurrBot
                     Console.WriteLine ("Loading modules...");
 
                     boyBot = new BoyPoints (client);
-                    gameCounter = new GameCounter (client);
+                    gameCounter = new GameCounter ();
                     uselessInteraction = new UselessInteraction ();
 
                     Console.WriteLine ("Modules loaded.");

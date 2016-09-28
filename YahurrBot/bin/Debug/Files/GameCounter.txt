@@ -1,1 +1,1 @@
-﻿[{"games":[{"name":"Unity","timePlayed":"00:00:29.9893487"}],"userName":"Henrik"}]
+﻿[{"games":[{"name":"Unity","timePlayed":"00:00:44.9911723"},{"name":"Counter-Strike: Global Offensive","timePlayed":"00:00:29.9871334"}],"userName":"Henrik"},{"games":[],"userName":"Zantox"}]

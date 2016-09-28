@@ -15,12 +15,6 @@ namespace YahurrBot
     {
         string path = Directory.GetCurrentDirectory ();
         List<Profile> profiles = new List<Profile> ();
-        DiscordClient client;
-
-        public GameCounter ( DiscordClient client )
-        {
-            this.client = client;
-        }
 
         public void ProfileUpdate ( UserUpdatedEventArgs profile )
         {
@@ -46,10 +40,15 @@ namespace YahurrBot
                 case "!time":
                     Profile profile = FindProfile (e.User.Name);
 
+                    string toSay = "```";
+
                     foreach (Game game in profile.games)
                     {
-                        e.Channel.SendMessage (game.name + " : " + game.timePlayed);
+                        toSay += game.name + " : " + game.timePlayed + Environment.NewLine;
                     }
+
+                    toSay += "```";
+                    e.Channel.SendMessage (toSay);
 
                     break;
                 default:

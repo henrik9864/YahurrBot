@@ -20,7 +20,7 @@ namespace YahurrBot
 
         public BoyPoints ( DiscordClient client )
         {
-            this.client = client;
+            //this.client = client;
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace YahurrBot
                 int points = int.Parse ((string)j[i]["points"]);
                 int toSend = int.Parse ((string)j[i]["toSend"]);
 
-                newUsers.Add (new BoyStatus (client.Servers.First (), userName, points, toSend));
+                newUsers.Add (new BoyStatus (userName, points, toSend));
             }
 
             users = newUsers;
@@ -102,14 +102,14 @@ namespace YahurrBot
                 user = clients.First ();
             if (user != null && e.Message.User != user)
             {
-                BoyStatus boy = FindBoy (e.User);
+                BoyStatus boy = FindBoy (e.User.Name);
                 if (boy.toSend > 0)
                 {
-                    FindBoy (user).AddPoint ();
+                    FindBoy (user.Name).AddPoint ();
                     boy.SpendToSend ();
                 }
 
-                e.Channel.SendMessage (user.Mention + " gained a good boy point.");
+                e.Channel.SendMessage (e.User.Mention + " gained a good boy point.");
             }
         }
 
@@ -124,10 +124,10 @@ namespace YahurrBot
                 user = clients.First ();
             if (user != null && e.Message.User != user)
             {
-                BoyStatus boy = FindBoy (e.User);
+                BoyStatus boy = FindBoy (e.User.Name);
                 if (boy.toSend > 0)
                 {
-                    FindBoy (user).RemovePoint ();
+                    FindBoy (user.Name).RemovePoint ();
                     boy.SpendToSend ();
                 }
 
@@ -138,27 +138,26 @@ namespace YahurrBot
         void ShowPoints ( string[] commdands, MessageEventArgs e )
         {
             IEnumerable<User> clients = e.Channel.FindUsers (commdands[1]);
-            User user = e.User;
-            BoyStatus status = FindBoy (user);
+            BoyStatus status = FindBoy (e.User.Name);
 
             switch (status.points)
             {
                 case 1:
-                    e.Channel.SendMessage (user.Mention + " has " + status.points + " point.");
+                    e.Channel.SendMessage (e.User.Mention + " has " + status.points + " point.");
                     break;
                 default:
-                    e.Channel.SendMessage (user.Mention + " has " + status.points + " points.");
+                    e.Channel.SendMessage (e.User.Mention + " has " + status.points + " points.");
                     break;
             }
         }
 
-        BoyStatus FindBoy ( User user )
+        BoyStatus FindBoy ( string username )
         {
-            BoyStatus status = users.Find (a => { return a.user == user; });
+            BoyStatus status = users.Find (a => { return a.userName == username; });
 
             if (status == null)
             {
-                status = new BoyStatus (user);
+                status = new BoyStatus (username);
                 users.Add (status);
             }
 
@@ -169,8 +168,14 @@ namespace YahurrBot
     class BoyStatus
     {
         [JsonIgnore]
-        public User user;
-        public string userName;
+        string name;
+        public string userName
+        {
+            get
+            {
+                return name;
+            }
+        }
 
         int boyPoints;
         [JsonProperty ("points")]
@@ -192,47 +197,16 @@ namespace YahurrBot
             }
         }
 
-        public BoyStatus ( User user )
+        public BoyStatus ( string userName )
         {
-            this.user = user;
-            userName = user.Name;
+            this.name = userName;
         }
 
-        public BoyStatus ( Server server, string userName, int points, int toSend )
+        public BoyStatus ( string userName, int points, int toSend )
         {
             boyPoints = points;
             left = toSend;
-            this.userName = userName;
-
-            IEnumerable<User> found = server.FindUsers (userName);
-
-            if (found.Count () > 0)
-            {
-                user = found.First ();
-            }
-            else
-                Console.WriteLine ("Warning unable to find user: " + userName);
-        }
-
-        public void UpdateUser ( Server server )
-        {
-            user = server.FindUsers (userName).First ();
-        }
-
-        public void Update ()
-        {
-            if (boyPoints > 0)
-            {
-                Role role = user.Server.FindRoles ("Good boy").First ();
-                Console.WriteLine (role.Name);
-                user.AddRoles (role);
-                //user.RemoveRoles (user.Server.FindRoles ("Bad boy").First ());
-            }
-            else if (boyPoints < 0)
-            {
-                user.AddRoles (user.Server.FindRoles ("Bad boy").First ());
-                //user.RemoveRoles (user.Server.FindRoles ("Good boy").First ());
-            }
+            name = userName;
         }
 
         public void AddPoint ()
