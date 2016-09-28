@@ -15,7 +15,11 @@ namespace YahurrBot
             switch (command[0])
             {
                 case "hei":
-                    e.Channel.SendMessage("Hei, " + e.User.Mention + "!");
+                    if (command.Length == 2 || command[1] == "yahurr" || command[1] == "alle")
+                    {
+                        e.Channel.SendMessage("Hei, " + e.User.Mention + "!");
+                        //int messageLength = command.Length;  e.Channel.SendMessage(messageLength.ToString());
+                    }
                     break;
                 case null:
                     break;
