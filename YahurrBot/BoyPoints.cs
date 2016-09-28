@@ -20,7 +20,7 @@ namespace YahurrBot
 
         public BoyPoints ( DiscordClient client )
         {
-            //this.client = client;
+            this.client = client;
         }
 
         /// <summary>

@@ -50,7 +50,7 @@ namespace YahurrBot
 
                 await client.Connect ("MjI4NDYzNTEyMzQ1NzcyMDMy.Csxslw.0Khe_VrvEdR86XWtx4I5lUnArKU", TokenType.Bot);
 
-                // Waits for client to fully load.
+                // Waits for client to fully load. (No longer an issue but keeping the code.)
                 await Task.Run (() =>
                 {
                     while (true)
@@ -75,6 +75,7 @@ namespace YahurrBot
                     uselessInteraction = new UselessInteraction ();
 
                     Console.WriteLine ("Modules loaded.");
+                    Console.WriteLine ("");
                 });
 
                 await Task.Run (() =>
@@ -83,6 +84,8 @@ namespace YahurrBot
 
                     boyBot.LoadPoints ();
                     gameCounter.LoadPoints ();
+
+                    client.SetGame ("with jews.");
 
                     Console.WriteLine ("Classes loaded.");
                     Console.WriteLine ("");
@@ -98,9 +101,6 @@ namespace YahurrBot
 
                     switch (commands[0])
                     {
-                        case "test":
-                            Console.WriteLine (client.Servers.First ().UserCount);
-                            break;
                         case "setgame":
                             client.SetGame (new Discord.Game (commands[1].Replace ('-', ' ')));
                             break;
