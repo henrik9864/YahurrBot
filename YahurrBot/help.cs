@@ -47,6 +47,7 @@ namespace YahurrBot
             int number;
             if (Int32.TryParse(commands, out number))
             {
+                number = Math.Abs(number);
                 if(number > (Math.Ceiling((float)list.Count / 5) - 1))
                 {
                     return ((int)list.Count / 5);
