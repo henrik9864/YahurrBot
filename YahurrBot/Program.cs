@@ -87,6 +87,7 @@ namespace YahurrBot
 
                     boyBot.LoadPoints ();
                     gameCounter.LoadPoints ();
+                    helpBot.startUp();
 
                     client.SetGame ("with jews.");
 
