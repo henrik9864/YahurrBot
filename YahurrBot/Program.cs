@@ -21,6 +21,7 @@ namespace YahurrBot
         BoyPoints boyBot;
         GameCounter gameCounter;
         UselessInteraction uselessInteraction;
+        TickTack tickTack;
 
         public void Start ()
         {
@@ -36,6 +37,7 @@ namespace YahurrBot
                     boyBot.ParseCommands (commdands, e);
                     uselessInteraction.ParseCommands (commdands, e);
                     gameCounter.ParseCommands (commdands, e);
+                    tickTack.ParseCommands (commdands, e);
                 }
             };
 
@@ -73,6 +75,7 @@ namespace YahurrBot
                     boyBot = new BoyPoints (client);
                     gameCounter = new GameCounter ();
                     uselessInteraction = new UselessInteraction ();
+                    tickTack = new TickTack ();
 
                     Console.WriteLine ("Modules loaded.");
                     Console.WriteLine ("");
