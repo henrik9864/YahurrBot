@@ -107,7 +107,7 @@ namespace YahurrBot
                 {
                     FindBoy (user.Name).AddPoint ();
                     boy.SpendToSend ();
-                    e.Channel.SendMessage(e.User.Mention + " gained a good boy point.");
+                    e.Channel.SendMessage(user.Mention + " gained a good boy point.");
                 }
                 else
                 {
@@ -132,9 +132,12 @@ namespace YahurrBot
                 {
                     FindBoy (user.Name).RemovePoint ();
                     boy.SpendToSend ();
+                    e.Channel.SendMessage(user.Mention + " lost a good boy point.");
                 }
-
-                e.Channel.SendMessage (user.Mention + " lost a good boy point.");
+            else
+                {
+                    e.Channel.SendMessage("You have no more points to use!");
+                }
             }
         }
 
@@ -219,10 +222,7 @@ namespace YahurrBot
 
         public void RemovePoint ()
         {
-            if (left > 0)
-            {
-                boyPoints--;
-            }
+            boyPoints--;
         }
 
         public void SpendToSend ()
