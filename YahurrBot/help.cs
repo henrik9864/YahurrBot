@@ -10,11 +10,8 @@ namespace YahurrBot
     {
         List<string> list = new List<string>() {
             "!help (page) - Shows this list",
-            " Goodboy/Badboy - Gives a goodboy or badboy point",
-            "!8ball - It's an eightball, what more is there to say?",
-            "!Test - Dette er en test faggots",
-            "!Placeholder - en placeholder command",
-            "!siste test - jeg lover"
+            " Goodboy/Badboy (name) - Gives a goodboy or badboy point",
+            "!8ball (question) - It's an eightball, what more is there to say?"
         };
 
         public void help(string[] commands, Discord.MessageEventArgs e)
@@ -25,7 +22,6 @@ namespace YahurrBot
                 //sidenummer = page(commands[1])
                 string test = "``` Help - page " + (page(commands[1]) + 1) + " of " + Math.Ceiling((float)list.Count / 5) + Environment.NewLine;
                 test = test + "-------------------------------------------------------" + Environment.NewLine;
-
                 for (int i = 0; i < 5; i++)
                 {
                     try
@@ -51,13 +47,13 @@ namespace YahurrBot
             int number;
             if (Int32.TryParse(commands, out number))
             {
-                if(number > (list.Count - 1))
+                if(number > (Math.Ceiling((float)list.Count / 5) - 1))
                 {
-                    return (list.Count - 1);
+                    return ((int)list.Count / 5);
                 }
                 else
                 {
-                    return (number - 1);
+                    return ((int)number/5);
                 }
             }
             else
