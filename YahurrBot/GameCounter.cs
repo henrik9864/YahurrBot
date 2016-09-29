@@ -39,15 +39,21 @@ namespace YahurrBot
             {
                 case "!time":
                     Profile profile = FindProfile (e.User.Name);
-
                     string toSay = "```";
+
+                    if (commands[1] != "")
+                    {
+                        User user = e.Server.FindUsers (commands[1]).First ();
+                        profile = FindProfile (user.Name);
+                        toSay = user.Mention + Environment.NewLine + "```";
+                    }
 
                     foreach (Game game in profile.games)
                     {
                         toSay += game.name + " : " + game.timePlayed + Environment.NewLine;
                     }
 
-                    toSay += "```";
+                    toSay += " ```";
                     e.Channel.SendMessage (toSay);
 
                     break;

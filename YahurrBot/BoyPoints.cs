@@ -20,7 +20,7 @@ namespace YahurrBot
 
         public BoyPoints ( DiscordClient client )
         {
-            //this.client = client;
+            this.client = client;
         }
 
         /// <summary>
@@ -107,9 +107,12 @@ namespace YahurrBot
                 {
                     FindBoy (user.Name).AddPoint ();
                     boy.SpendToSend ();
+                    e.Channel.SendMessage(e.User.Mention + " gained a good boy point.");
                 }
-
-                e.Channel.SendMessage (e.User.Mention + " gained a good boy point.");
+                else
+                {
+                    e.Channel.SendMessage("You have no more points to use!");
+                }
             }
         }
 
@@ -211,10 +214,7 @@ namespace YahurrBot
 
         public void AddPoint ()
         {
-            if (left > 0)
-            {
-                boyPoints++;
-            }
+            boyPoints++;
         }
 
         public void RemovePoint ()
