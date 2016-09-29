@@ -21,11 +21,8 @@ namespace YahurrBot
         BoyPoints boyBot;
         GameCounter gameCounter;
         UselessInteraction uselessInteraction;
-<<<<<<< HEAD
         TickTack tickTack;
-=======
         Help helpBot;
->>>>>>> 033989299e04174a5a514983d403ad1520aad0ff
 
         public void Start ()
         {
@@ -41,11 +38,8 @@ namespace YahurrBot
                     boyBot.ParseCommands (commdands, e);
                     uselessInteraction.ParseCommands (commdands, e);
                     gameCounter.ParseCommands (commdands, e);
-<<<<<<< HEAD
                     tickTack.ParseCommands (commdands, e);
-=======
                     helpBot.help (commdands, e);
->>>>>>> 033989299e04174a5a514983d403ad1520aad0ff
                 }
             };
 
