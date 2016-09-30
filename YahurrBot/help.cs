@@ -8,18 +8,18 @@ namespace YahurrBot
 {
     class Help
     {
-        List<string> list = new List<string>() {
-            "!help (page) - Shows this list",
-            " Goodboy/Badboy (name) - Gives a goodboy or badboy point",
-            "!8ball (question) - It's an eightball, what more is there to say?"
-        };
+        List<string> list = new List<string>();
+
+        public void startUp()
+        {
+            addHelp("!help (page) - Shows this list");
+            list.Sort();
+        }    
 
         public void help(string[] commands, Discord.MessageEventArgs e)
         {
             if(commands[0] == "!help")
             {
-                list.Sort();
-                //sidenummer = page(commands[1])
                 string test = "``` Help - page " + (page(commands[1]) + 1) + " of " + Math.Ceiling((float)list.Count / 5) + Environment.NewLine;
                 test = test + "-------------------------------------------------------" + Environment.NewLine;
                 for (int i = 0; i < 5; i++)
@@ -42,7 +42,7 @@ namespace YahurrBot
             }
         }
     
-    public int page(string commands)
+    private int page(string commands)
         {
             int number;
             if (Int32.TryParse(commands, out number))
@@ -62,6 +62,12 @@ namespace YahurrBot
                 return 0;
             }
 
+        }
+
+    public void addHelp(string description)
+        {
+            list.Add(description);
+            list.Sort();
         }
     }
 }
