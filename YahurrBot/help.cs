@@ -13,6 +13,8 @@ namespace YahurrBot
         public void startUp()
         {
             addHelp("!help (page)", "Shows this list");
+            addHelp("test1", "test description");
+            addHelp("test2", "test description");
             list.Sort((a,b) => {
                 return a.command.CompareTo(b.command);
             });
