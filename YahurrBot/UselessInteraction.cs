@@ -32,6 +32,17 @@ namespace YahurrBot
                     }
 
                     break;
+                case "!role":
+                    IEnumerable<User> player = e.Server.FindUsers(command[1]);
+                    if (command.Length >= 2 && player.Count() >= 1)
+                    {
+                        e.Channel.SendMessage("Yey!");
+                        //IEnumerable<Role> role = e.User.Roles.
+                    }
+                    break;
+                case "!snowboard":
+                    e.Channel.SendMessage("Did you mean !showboard?");
+                    break;
                 default:
                     break;
             }
