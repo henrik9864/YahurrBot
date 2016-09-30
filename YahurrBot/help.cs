@@ -8,12 +8,14 @@ namespace YahurrBot
 {
     class Help
     {
-        List<string> list = new List<string>();
+        static List<Bindestrek> list = new List<Bindestrek>();
 
         public void startUp()
         {
-            addHelp("!help (page) - Shows this list");
-            list.Sort();
+            addHelp("!help (page)", "Shows this list");
+            list.Sort((a,b) => {
+                return a.command.CompareTo(b.command);
+            });
         }    
 
         public void help(string[] commands, Discord.MessageEventArgs e)
@@ -21,24 +23,23 @@ namespace YahurrBot
             if(commands[0] == "!help")
             {
                 string test = "``` Help - page " + (page(commands[1]) + 1) + " of " + Math.Ceiling((float)list.Count / 5) + Environment.NewLine;
-                test = test + "-------------------------------------------------------" + Environment.NewLine;
+                test += "-------------------------------------------------------" + Environment.NewLine;
                 for (int i = 0; i < 5; i++)
                 {
+                    int current = page(commands[1]) * 5 + i;
                     try
                     {
-                        var x = list[page(commands[1]) * 5 + i];
+                        var x = list[current];
                     }
                     catch
                     {
                         break;
                     }
-
-                    test = test + list[page(commands[1])*5 + i] + Environment.NewLine;
+                    test += list[current].command + " - " + list[current].description + Environment.NewLine;
                 }
 
-                test = test + "-------------------------------------------------------```";
+                test += "-------------------------------------------------------```";
                 e.Channel.SendMessage(test);
-                
             }
         }
     
@@ -64,10 +65,22 @@ namespace YahurrBot
 
         }
 
-    public void addHelp(string description)
+    static public void addHelp(string command, string description)
         {
-            list.Add(description);
-            list.Sort();
+            Bindestrek bindestrek = new Bindestrek(command, description);
+            list.Add(bindestrek);
+        }
+
+        private class Bindestrek
+        {
+            public string command;
+            public string description;
+
+            public Bindestrek(string command, string description)
+            {
+                this.command = command;
+                this.description = description;
+            }
         }
     }
 }
