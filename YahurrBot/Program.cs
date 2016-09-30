@@ -21,7 +21,7 @@ namespace YahurrBot
         BoyPoints boyBot;
         GameCounter gameCounter;
         UselessInteraction uselessInteraction;
-        //TickTack tickTack;
+        TickTack tickTack;
         Help helpBot;
 
         public void Start ()
@@ -38,7 +38,7 @@ namespace YahurrBot
                     boyBot.ParseCommands (commdands, e);
                     uselessInteraction.ParseCommands (commdands, e);
                     gameCounter.ParseCommands (commdands, e);
-                    //tickTack.ParseCommands (commdands, e);
+                    tickTack.ParseCommands (commdands, e);
                     helpBot.help (commdands, e);
                 }
             };
@@ -54,6 +54,11 @@ namespace YahurrBot
 
                 await client.Connect ("MjI4NDYzNTEyMzQ1NzcyMDMy.Csxslw.0Khe_VrvEdR86XWtx4I5lUnArKU", TokenType.Bot);
 
+                Console.WriteLine ("Bot is connected with key: MjI4NDYzNTEyMzQ1NzcyMDMy.CsxZjg.ilg6p_QgxMCC7t-9IMcc5uyl_6Q.");
+                Console.WriteLine ("");
+
+                Console.WriteLine ("Loading classes...");
+
                 // Waits for client to fully load. (No longer an issue but keeping the code.)
                 await Task.Run (() =>
                 {
@@ -66,37 +71,27 @@ namespace YahurrBot
                     }
                 });
 
-                Console.WriteLine ("Bot is connected with key: MjI4NDYzNTEyMzQ1NzcyMDMy.CsxZjg.ilg6p_QgxMCC7t-9IMcc5uyl_6Q.");
-                Console.WriteLine ("");
-
                 await Task.Run (() =>
                 {
-
-                    Console.WriteLine ("Loading modules...");
-
                     boyBot = new BoyPoints (client);
                     gameCounter = new GameCounter ();
                     uselessInteraction = new UselessInteraction ();
-                    //tickTack = new TickTack ();
+                    tickTack = new TickTack (client);
                     helpBot = new Help ();
 
-                    Console.WriteLine ("Modules loaded.");
-                    Console.WriteLine ("");
                 });
 
                 await Task.Run (() =>
                 {
-                    Console.WriteLine ("Loading classes...");
-
                     boyBot.LoadPoints ();
                     gameCounter.LoadPoints ();
                     helpBot.startUp();
 
                     client.SetGame ("with jews.");
-
-                    Console.WriteLine ("Classes loaded.");
-                    Console.WriteLine ("");
                 });
+
+                Console.WriteLine ("Classes loaded.");
+                Console.WriteLine ("");
 
                 while (true)
                 {
