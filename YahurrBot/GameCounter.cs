@@ -91,6 +91,7 @@ namespace YahurrBot
 
         public override void Load ( DiscordClient client )
         {
+            Help.addHelp ("!time", "Gives you a list of games you've played and amount of hours");
             LoadPoints ();
         }
 
@@ -103,8 +104,6 @@ namespace YahurrBot
 
         public void LoadPoints ()
         {
-            Help.addHelp ("!time", "Gives you a list of games you've played and amount of hours");
-
             JArray j = (JArray)JsonConvert.DeserializeObject (File.ReadAllText (path + "/Files/GameCounter.txt", System.Text.Encoding.UTF8));
             List<Profile> newProfiles = new List<Profile> ();
 

@@ -92,24 +92,3 @@ namespace YahurrBot
         }
     }
 }
-
-namespace Test
-{
-
-    class Test2
-    {
-        Noe noe = new Noe ("en gstreng");
-
-        List<Noe> noeListe = new List<Noe> () { new Noe ("hei") };
-
-
-    }
-
-    class Noe
-    {
-        public Noe ( string gsteng )
-        {
-            // da kan du bruke gstrenge her
-        }
-    }
-}

@@ -23,6 +23,8 @@ namespace YahurrBot
             this.client = client;
 
             LoadPoints ();
+            Help.addHelp (" Goodboy (name)", "Gives a goodboy point to target");
+            Help.addHelp (" Badboy (name)", "Takes a goodboy point from the target");
         }
 
         /// <summary>
@@ -81,8 +83,6 @@ namespace YahurrBot
 
         public void LoadPoints ()
         {
-            Help.addHelp (" Goodboy (name)", "Gives a goodboy point to target");
-            Help.addHelp (" Badboy (name)", "Takes a goodboy point from the target");
 
             JArray j = (JArray)JsonConvert.DeserializeObject (File.ReadAllText (path + "/Files/Saves.txt", System.Text.Encoding.UTF8));
             List<BoyStatus> newUsers = new List<BoyStatus> ();

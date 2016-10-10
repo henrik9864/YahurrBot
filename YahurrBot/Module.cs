@@ -9,8 +9,10 @@ namespace YahurrBot
 {
     abstract class Module
     {
-        static List<Module> loadedModules = new List<Module> ();
+        static List<Module> loadedModules = new List<Module> (); // List of all currently loaded modules.
 
+        // Finds all classes that extends Modules and creates and instance of each of them.
+        // Then it calls the load function
         public static int LoadModules ( Discord.DiscordClient client )
         {
             IEnumerable<Type> types = from t in Assembly.GetExecutingAssembly ().GetTypes () where t.IsClass && typeof (Module).IsAssignableFrom (t) && t.IsAbstract == false select t;
@@ -49,6 +51,7 @@ namespace YahurrBot
                 module.ProfileUpdate (e);
             }
         }
+
 
         public virtual void Load ( Discord.DiscordClient client )
         {
