@@ -11,12 +11,12 @@ using Newtonsoft.Json.Linq;
 
 namespace YahurrBot
 {
-    class GameCounter
+    class GameCounter : Module
     {
         string path = Directory.GetCurrentDirectory ();
         List<Profile> profiles = new List<Profile> ();
 
-        public void ProfileUpdate ( UserUpdatedEventArgs profile )
+        public override void ProfileUpdate ( UserUpdatedEventArgs profile )
         {
             if (profile.After.CurrentGame.HasValue)
             {
@@ -33,7 +33,7 @@ namespace YahurrBot
             SaveTime ();
         }
 
-        public void ParseCommands ( string[] commands, MessageEventArgs e )
+        public override void ParseCommands ( string[] commands, MessageEventArgs e )
         {
             switch (commands[0])
             {
@@ -62,7 +62,7 @@ namespace YahurrBot
             }
         }
 
-        public void ParseConsoleCommands ( string[] commdands )
+        public override void ParseConsoleCommands ( string[] commdands )
         {
             switch (commdands[0])
             {
@@ -89,6 +89,11 @@ namespace YahurrBot
             }
         }
 
+        public override void Load ( DiscordClient client )
+        {
+            LoadPoints ();
+        }
+
         public void SaveTime ()
         {
             string json = JsonConvert.SerializeObject (profiles.ToArray (), Formatting.None);
@@ -98,7 +103,7 @@ namespace YahurrBot
 
         public void LoadPoints ()
         {
-            Help.addHelp("!time", "Gives you a list of games you've played and amount of hours");
+            Help.addHelp ("!time", "Gives you a list of games you've played and amount of hours");
 
             JArray j = (JArray)JsonConvert.DeserializeObject (File.ReadAllText (path + "/Files/GameCounter.txt", System.Text.Encoding.UTF8));
             List<Profile> newProfiles = new List<Profile> ();

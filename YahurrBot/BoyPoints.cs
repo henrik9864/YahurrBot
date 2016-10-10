@@ -11,22 +11,24 @@ using Newtonsoft.Json.Linq;
 
 namespace YahurrBot
 {
-    class BoyPoints
+    class BoyPoints : Module
     {
         string path = Directory.GetCurrentDirectory ();
         List<BoyStatus> users = new List<BoyStatus> ();
 
         DiscordClient client;
 
-        public BoyPoints ( DiscordClient client )
+        public override void Load ( DiscordClient client )
         {
             this.client = client;
+
+            LoadPoints ();
         }
 
         /// <summary>
         /// Executes command typed in the discord chat.
         /// </summary>
-        public void ParseCommands ( string[] commdands, MessageEventArgs e )
+        public override void ParseCommands ( string[] commdands, MessageEventArgs e )
         {
             switch (commdands[0])
             {
@@ -49,7 +51,7 @@ namespace YahurrBot
         /// <summary>
         /// Executes command typed in the console.
         /// </summary>
-        public void ParseConsoleCommands ( string[] commdands )
+        public override void ParseConsoleCommands ( string[] commdands )
         {
             switch (commdands[0])
             {
@@ -79,8 +81,8 @@ namespace YahurrBot
 
         public void LoadPoints ()
         {
-            Help.addHelp(" Goodboy (name)", "Gives a goodboy point to target");
-            Help.addHelp(" Badboy (name)", "Takes a goodboy point from the target");
+            Help.addHelp (" Goodboy (name)", "Gives a goodboy point to target");
+            Help.addHelp (" Badboy (name)", "Takes a goodboy point from the target");
 
             JArray j = (JArray)JsonConvert.DeserializeObject (File.ReadAllText (path + "/Files/Saves.txt", System.Text.Encoding.UTF8));
             List<BoyStatus> newUsers = new List<BoyStatus> ();
@@ -110,11 +112,11 @@ namespace YahurrBot
                 {
                     FindBoy (user.Name).AddPoint ();
                     boy.SpendToSend ();
-                    e.Channel.SendMessage(user.Mention + " gained a good boy point.");
+                    e.Channel.SendMessage (user.Mention + " gained a good boy point.");
                 }
                 else
                 {
-                    e.Channel.SendMessage("You have no more points to use!");
+                    e.Channel.SendMessage ("You have no more points to use!");
                 }
             }
         }
@@ -135,11 +137,11 @@ namespace YahurrBot
                 {
                     FindBoy (user.Name).RemovePoint ();
                     boy.SpendToSend ();
-                    e.Channel.SendMessage(user.Mention + " lost a good boy point.");
+                    e.Channel.SendMessage (user.Mention + " lost a good boy point.");
                 }
-            else
+                else
                 {
-                    e.Channel.SendMessage("You have no more points to use!");
+                    e.Channel.SendMessage ("You have no more points to use!");
                 }
             }
         }
