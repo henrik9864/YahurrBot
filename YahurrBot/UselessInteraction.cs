@@ -8,9 +8,9 @@ using Discord;
 
 namespace YahurrBot
 {
-    class UselessInteraction
+    class UselessInteraction : Module
     {
-        public void ParseCommands(string[] command, MessageEventArgs e)
+        public override void ParseCommands(String[] command, MessageEventArgs e)
         {
             switch (command[0])
             {
