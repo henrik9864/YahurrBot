@@ -18,12 +18,6 @@ namespace YahurrBot
 
         DiscordClient client;
 
-        BoyPoints boyBot;
-        GameCounter gameCounter;
-        UselessInteraction uselessInteraction;
-        TickTack tickTack;
-        Help helpBot;
-
         public void Start ()
         {
             client = new DiscordClient ();
@@ -35,17 +29,14 @@ namespace YahurrBot
                     string message = e.Message.Text + " ";
                     string[] commdands = message.ToLower ().Split (' ');
 
-                    boyBot.ParseCommands (commdands, e);
-                    uselessInteraction.ParseCommands (commdands, e);
-                    gameCounter.ParseCommands (commdands, e);
-                    tickTack.ParseCommands (commdands, e);
-                    helpBot.help (commdands, e);
+                    Module.Command (commdands, e);
                 }
             };
 
             client.UserUpdated += ( s, p ) =>
             {
-                gameCounter.ProfileUpdate (p);
+
+                Module.UpdateProfile (p);
             };
 
             client.ExecuteAndWait (async () =>
@@ -57,7 +48,7 @@ namespace YahurrBot
                 Console.WriteLine ("Bot is connected with key: MjI4NDYzNTEyMzQ1NzcyMDMy.CsxZjg.ilg6p_QgxMCC7t-9IMcc5uyl_6Q.");
                 Console.WriteLine ("");
 
-                Console.WriteLine ("Loading classes...");
+                Console.WriteLine ("Loading modules...");
 
                 // Waits for client to fully load. (No longer an issue but keeping the code.)
                 await Task.Run (() =>
@@ -73,33 +64,20 @@ namespace YahurrBot
 
                 await Task.Run (() =>
                 {
-                    boyBot = new BoyPoints (client);
-                    gameCounter = new GameCounter ();
-                    uselessInteraction = new UselessInteraction ();
-                    tickTack = new TickTack (client);
-                    helpBot = new Help ();
-
-                });
-
-                await Task.Run (() =>
-                {
-                    boyBot.LoadPoints ();
-                    gameCounter.LoadPoints ();
-                    helpBot.startUp();
+                    int modules = Module.LoadModules (client);
 
                     client.SetGame ("with jews.");
-                });
 
-                Console.WriteLine ("Classes loaded.");
-                Console.WriteLine ("");
+                    Console.WriteLine (modules + " modules loaded.");
+                    Console.WriteLine ("");
+                });
 
                 while (true)
                 {
                     string message = Console.ReadLine ();
                     string[] commands = message.Split (' ');
 
-                    boyBot.ParseConsoleCommands (commands);
-                    gameCounter.ParseConsoleCommands (commands);
+                    Module.ConsoleCommand (commands);
 
                     switch (commands[0])
                     {
