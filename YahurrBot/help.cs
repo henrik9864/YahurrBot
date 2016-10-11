@@ -3,24 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Discord;
 
 namespace YahurrBot
 {
-    class Help
+    class Help : Module
     {
         static List<Bindestrek> list = new List<Bindestrek>();
 
-        public void startUp()
+        public override void Load(DiscordClient client)
         {
             addHelp("!help (page)", "Shows this list");
             list.Sort((a,b) => {
-                return a.command.CompareTo(b.command);
+            return a.command.CompareTo(b.command);
             });
-        }    
+        }
 
-        public void help(string[] commands, Discord.MessageEventArgs e)
+        public override void ParseCommands(string[] commands, MessageEventArgs e)
         {
-            if(commands[0] == "!help")
+            if (commands[0] == "!help")
             {
                 string test = "``` Help - page " + (page(commands[1]) + 1) + " of " + Math.Ceiling((float)list.Count / 5) + Environment.NewLine;
                 test += "-------------------------------------------------------" + Environment.NewLine;
@@ -64,7 +65,12 @@ namespace YahurrBot
             }
 
         }
-
+    
+    /// <summary>
+    /// A function for adding your command to the !help list.
+    /// </summary>
+    /// <param name="command">The command and parameters for using the function</param>
+    /// <param name="description">The description for the function</param>
     static public void addHelp(string command, string description)
         {
             Bindestrek bindestrek = new Bindestrek(command, description);

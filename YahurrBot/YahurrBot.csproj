@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BoyPoints.cs" />
+    <Compile Include="ConnectFour.cs" />
     <Compile Include="GameCounter.cs" />
     <Compile Include="help.cs" />
     <Compile Include="Module.cs" />
