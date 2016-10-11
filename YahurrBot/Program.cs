@@ -39,6 +39,12 @@ namespace YahurrBot
                 Module.UpdateProfile (p);
             };
 
+            client.UserJoined += ( s, p ) =>
+            {
+                Module.JoinedUser (p);
+            };
+
+
             client.ExecuteAndWait (async () =>
             {
                 Console.WriteLine ("Connect to discord...");
@@ -65,6 +71,7 @@ namespace YahurrBot
                 await Task.Run (() =>
                 {
                     int modules = Module.LoadModules (client);
+                    AppDomain.CurrentDomain.ProcessExit += new EventHandler (Module.ExitProgram);
 
                     client.SetGame ("with jews.");
 
