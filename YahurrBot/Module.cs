@@ -80,33 +80,36 @@ namespace YahurrBot
             JArray j = (JArray)JsonConvert.DeserializeObject (File.ReadAllText (saveDir + "/Files/Modules.txt", System.Text.Encoding.UTF8));
             List<DataUser> newUsers = new List<DataUser> ();
 
-            for (int i = 0; i < j.Count; i++)
+            if (j != null)
             {
-                string userName = (string)j[i]["name"];
-                JArray jsonData = (JArray)j[i]["data"];
-
-                DataUser user = new DataUser (userName);
-
-                for (int a = 0; a < jsonData.Count; a++)
+                for (int i = 0; i < j.Count; i++)
                 {
-                    Type type = Type.GetType ((string)jsonData[a]["typeName"]);
-                    string name = (string)jsonData[a]["name"];
-                    JToken item = jsonData[a]["item"];
+                    string userName = (string)j[i]["name"];
+                    JArray jsonData = (JArray)j[i]["data"];
 
-                    object data = Activator.CreateInstance (type, new object[] { });
-                    foreach (JProperty prop in item)
+                    DataUser user = new DataUser (userName);
+
+                    for (int a = 0; a < jsonData.Count; a++)
                     {
-                        FieldInfo field = data.GetType ().GetField (prop.Name);
-                        if (field != null && field.GetType().IsClass == false)
+                        Type type = Type.GetType ((string)jsonData[a]["typeName"]);
+                        string name = (string)jsonData[a]["name"];
+                        JToken item = jsonData[a]["item"];
+
+                        object data = Activator.CreateInstance (type, new object[] { });
+                        foreach (JProperty prop in item)
                         {
-                            field.SetValue (data, Convert.ChangeType ((string)prop.Value, field.FieldType));
+                            FieldInfo field = data.GetType ().GetField (prop.Name);
+                            if (field != null && field.GetType ().IsClass == false)
+                            {
+                                field.SetValue (data, Convert.ChangeType ((string)prop.Value, field.FieldType));
+                            }
                         }
+
+                        user.AddData (new Obj (data, name, type), false);
                     }
 
-                    user.AddData (new Obj (data, name, type), false);
+                    newUsers.Add (user);
                 }
-
-                newUsers.Add (user);
             }
 
             users = newUsers;
@@ -178,7 +181,7 @@ namespace YahurrBot
         public void Save<T> ( T toSave, string name, string userName, bool ovveride ) where T : class
         {
             Obj item = new Obj (toSave, name, typeof (T));
-            DataUser user = FindUser (userName);
+            DataUser user = FindDataUser (userName);
 
             if (!user.AddData (item, ovveride))
             {
@@ -190,7 +193,7 @@ namespace YahurrBot
 
         public T Load<T> ( string name, string userName ) where T : class
         {
-            DataUser user = FindUser (userName);
+            DataUser user = FindDataUser (userName);
             Obj obj = user.FindData (name);
 
             T dest = (T)obj.item;
@@ -202,7 +205,7 @@ namespace YahurrBot
             return dest;
         }
 
-        DataUser FindUser ( string userName )
+        DataUser FindDataUser ( string userName )
         {
             DataUser user = users.Find (a => { return a.name == userName; });
 
@@ -211,6 +214,27 @@ namespace YahurrBot
                 user = new DataUser (userName);
                 users.Add (user);
             }
+
+            return user;
+        }
+
+        public Discord.User FindPlayer (Discord.Server server, string identefier)
+        {
+            identefier = identefier.Replace ("@", "");
+            List<Discord.User> users = new List<Discord.User> (server.Users);
+
+            Console.WriteLine (users.Count);
+
+            Discord.User user = users.Find(a => {
+
+                bool name = a.Name.ToLower() == identefier.ToLower();
+                bool nick = false;
+                if (a.Nickname != null)
+                {
+                    nick = a.Nickname.ToLower () == identefier.ToLower ();
+                }
+                return name || nick;
+            });
 
             return user;
         }

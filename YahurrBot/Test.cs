@@ -11,8 +11,8 @@ namespace YahurrBot
     {
         public override void Load ( DiscordClient client )
         {
-            Test1 test = new Test1 ();
-            test.tesst = 2;
+            //Test1 test = new Test1 ();
+            //test.tesst = 2;
 
             //Save (test, "points", "Henrik", true);
 
