@@ -14,13 +14,13 @@ namespace YahurrBot
             Test1 test = new Test1 ();
             test.tesst = 2;
 
-            Save (test, "points", "Henrik", true);
+            //Save (test, "points", "Henrik", true);
 
-            ExitProgram (new object (), new EventArgs ());
+            //ExitProgram (new object (), new EventArgs ());
 
-            Test1 points = Load<Test1> ("points", "Henrik");
+            //Test1 points = Load<Test1> ("points", "Henrik");
 
-            Console.WriteLine (points.test.mjesi.mjes3);
+            //Console.WriteLine (points.test.mjesi.mjes3);
         }
     }
 
