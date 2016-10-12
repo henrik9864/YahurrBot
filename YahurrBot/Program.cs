@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.IO;
+using System.Windows;
 
 using Discord;
 using Newtonsoft.Json;
@@ -71,7 +72,8 @@ namespace YahurrBot
                 await Task.Run (() =>
                 {
                     int modules = Module.LoadModules (client);
-                    AppDomain.CurrentDomain.ProcessExit += new EventHandler (Module.ExitProgram);
+                    AppDomain.CurrentDomain.ProcessExit += new EventHandler (Module.ExitProgram); // Funker i noen tilfeller.
+                    
 
                     client.SetGame ("with jews.");
 

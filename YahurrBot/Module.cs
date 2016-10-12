@@ -184,6 +184,8 @@ namespace YahurrBot
             {
                 Console.WriteLine ("Warning: unable to save '" + name + "' name taken.");
             }
+
+            SaveFiles ();
         }
 
         public T Load<T> ( string name, string userName ) where T : class
