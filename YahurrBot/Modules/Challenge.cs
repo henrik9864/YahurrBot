@@ -193,8 +193,8 @@ namespace YahurrBot.Modules
             {
                 if (GetUser (playerPlaying) == playing)
                 {
-                    bool hasWon = game.HasWon ();
                     string toDraw = game.PlayRound (playerPlaying, arguments);
+                    bool hasWon = game.HasWon ();
 
                     if (toDraw == "")
                     {
