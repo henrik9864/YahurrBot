@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Discord;
 
-namespace YahurrBot
+namespace YahurrBot.Modules
 {
     class Help : Module
     {
