@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Discord;
 using YahurrBot.Games;
 
-namespace YahurrBot
+namespace YahurrBot.Modules
 {
     class Challenge : Module
     {

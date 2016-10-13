@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle ("YahurrBot")]
-[assembly: AssemblyDescription ("")]
+[assembly: AssemblyDescription ("Best discord bot ever.")]
 [assembly: AssemblyConfiguration ("")]
-[assembly: AssemblyCompany ("")]
+[assembly: AssemblyCompany ("Yahurr Inc")]
 [assembly: AssemblyProduct ("YahurrBot")]
-[assembly: AssemblyCopyright ("Copyright ©  2016")]
+[assembly: AssemblyCopyright ("Copyright © 2016")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]
 

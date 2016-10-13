@@ -9,7 +9,7 @@ using Discord;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace YahurrBot
+namespace YahurrBot.Modules
 {
     class BoyPoints : Module
     {

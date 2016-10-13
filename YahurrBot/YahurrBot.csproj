@@ -33,8 +33,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Discord.Net, Version=0.9.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Discord.Net.0.9.5\lib\net45\Discord.Net.dll</HintPath>
+    <Reference Include="Discord.Net, Version=0.9.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Discord.Net.0.9.6\lib\net45\Discord.Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Discord.Net.Audio, Version=0.9.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Discord.Net.Audio.0.9.6\lib\net45\Discord.Net.Audio.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Discord.Net.Commands, Version=0.9.5.0, Culture=neutral, processorArchitecture=MSIL">
@@ -75,15 +79,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BoyPoints.cs" />
-    <Compile Include="GameCounter.cs" />
-    <Compile Include="help.cs" />
+    <Compile Include="Attributes\IgnoreModule.cs" />
+    <Compile Include="Attributes\LoadModule.cs" />
+    <Compile Include="Games\TestGame.cs" />
+    <Compile Include="Modules\BoyPoints.cs" />
+    <Compile Include="Modules\Challenge.cs" />
+    <Compile Include="Modules\GameCounter.cs" />
+    <Compile Include="Modules\help.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test.cs" />
-    <Compile Include="TickTack.cs" />
-    <Compile Include="UselessInteraction.cs" />
+    <Compile Include="Modules\TickTack.cs" />
+    <Compile Include="Modules\UselessInteraction.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
