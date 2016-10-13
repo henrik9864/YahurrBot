@@ -21,7 +21,7 @@ namespace YahurrBot
 
         public override void ParseCommands ( string[] commands, MessageEventArgs e )
         {
-            switch (commands[0])
+            /*switch (commands[0])
             {
                 case "!challenge":
                     User challenged = client.Servers.First ().FindUsers (commands[1]).First ();
@@ -83,7 +83,7 @@ namespace YahurrBot
                     }
 
                     break;
-            }
+            }*/
         }
 
         Square[,] MakeBoard ( int size )

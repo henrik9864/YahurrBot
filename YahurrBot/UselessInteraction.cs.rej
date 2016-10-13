@@ -1,0 +1,49 @@
+diff a/YahurrBot/UselessInteraction.cs b/YahurrBot/UselessInteraction.cs	(rejected hunks)
+@@ -25,37 +25,37 @@
+                 case "!8ball":
+                     if (command.Length >= 3 && command[command.Length - 2][command[command.Length - 2].Length - 1] == '?')
+                     {
+-                        String answer = eightBall();
++                        String answer = eightBall ();
+                         //Debug message with interesting numbers
+                         //e.Channel.SendMessage(answer + " " + command.Length.ToString() + " [" + command[command.Length - 2][command[command.Length - 2].Length - 1] + "]");
+-                        e.Channel.SendMessage(answer);
++                        e.Channel.SendMessage (answer);
+                     }
+ 
+                     break;
+                 case "!role":
+-                    IEnumerable<User> player = e.Server.FindUsers(command[1]);
+-                    if (command.Length >= 2 && player.Count() >= 1)
++                    IEnumerable<User> player = e.Server.FindUsers (command[1]);
++                    if (command.Length >= 2 && player.Count () >= 1)
+                     {
+-                        e.Channel.SendMessage("Yey!");
++                        e.Channel.SendMessage ("Yey!");
+                         //IEnumerable<Role> role = e.User.Roles.
+                     }
+                     break;
+                 case "!snowboard":
+-                    e.Channel.SendMessage("Did you mean !showboard?");
++                    e.Channel.SendMessage ("Did you mean !showboard?");
+                     break;
+                 default:
+                     break;
+             }
+         }
+ 
+-        String eightBall()
++        String eightBall ()
+         {
+-            String answer = "";
++            string answer = "";
+             int rand;
+ 
+-            Random random = new Random();
++            Random random = new Random ();
+ 
+-            rand = random.Next(0, 8);
++            rand = random.Next (0, 8);
+ 
+             switch (rand)
+             {
