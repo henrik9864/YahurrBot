@@ -21,7 +21,7 @@ namespace YahurrBot
 
         public override void ParseCommands ( string[] commands, MessageEventArgs e )
         {
-            switch (commands[0])
+            /*switch (commands[0])
             {
                 case "!challenge":
                     User challenged = client.Servers.First ().FindUsers (commands[1]).First ();
@@ -83,7 +83,7 @@ namespace YahurrBot
                     }
 
                     break;
-            }
+            }*/
         }
 
         Square[,] MakeBoard ( int size )
@@ -193,21 +193,9 @@ namespace YahurrBot
                 x--;
                 y--;
 
-                if (turn >= board.GetUpperBound (0) * board.GetUpperBound (1))
-                {
-                    channel.SendMessage ("The game is a tie!");
-                    return true;
-                }
-                else
-                {
-                    turn++;
-                }
-
                 if (players[playerIndex] == player && !board[y, x].taken)
                 {
                     board[y, x].Take (symbols[playerIndex]);
-
-                    Console.WriteLine (symbols[playerIndex]);
 
                     if (HasWon (y, x, symbols[playerIndex]))
                     {
@@ -220,6 +208,16 @@ namespace YahurrBot
                     {
                         playerIndex = 0;
                     }
+                }
+
+                if (turn >= board.GetUpperBound (0) * board.GetUpperBound (1) - 1)
+                {
+                    channel.SendMessage ("The game is a tie!");
+                    return true;
+                }
+                else
+                {
+                    turn++;
                 }
 
                 channel.SendMessage (players[playerIndex] + "'s turn.");
@@ -270,14 +268,6 @@ namespace YahurrBot
                     }
                 }
 
-                for (int ix = board.GetUpperBound (0); ix >= 0; ix--)
-                {
-                    if (board.GetUpperBound (1) - ix >= 3)
-                    {
-
-                    }
-                }
-
                 if (x == 1 && y == 1)
                 {
                     if (board[x + 1, y + 1].symbol == symbol && board[x - 1, y - 1].symbol == symbol)
@@ -291,7 +281,6 @@ namespace YahurrBot
                     }
                 }
 
-                Console.WriteLine ("Row");
                 return winCountX >= 3 || winCountY >= 3;
             }
         }

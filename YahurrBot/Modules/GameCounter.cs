@@ -139,109 +139,110 @@ namespace YahurrBot
 
             return profile;
         }
+
+        class Profile
+        {
+            string user;
+            public string userName
+            {
+                get
+                {
+                    return user;
+                }
+            }
+
+            public List<Game> games = new List<Game> ();
+
+            public Profile ( string name )
+            {
+                user = name;
+            }
+
+            public Profile ( string name, List<Game> games )
+            {
+                user = name;
+                this.games = games;
+            }
+
+            public Game FindGame ( string name )
+            {
+                Game game = games.Find (a => { return a.name == name; });
+
+                if (game == null)
+                {
+                    game = new Game (name);
+                    games.Add (game);
+                }
+
+                return game;
+            }
+        }
+
+        class Game
+        {
+            string gameName;
+            public string name
+            {
+                get
+                {
+                    return gameName;
+                }
+            }
+
+            TimeSpan gameTime;
+            public TimeSpan timePlayed
+            {
+                get
+                {
+                    return gameTime;
+                }
+            }
+            [JsonIgnore]
+            public DateTime session
+            {
+                get
+                {
+                    return DateTime.Now.Subtract (gameTime);
+                }
+            }
+
+            bool playingGame;
+            [JsonIgnore]
+            public bool isPlaying
+            {
+                get
+                {
+                    return playingGame;
+                }
+            }
+
+            DateTime time;
+
+            public Game ( string name )
+            {
+                gameName = name;
+            }
+
+            public Game ( string name, TimeSpan timePlayed )
+            {
+                gameName = name;
+                gameTime = timePlayed;
+            }
+
+            public void StartPlaying ()
+            {
+                playingGame = true;
+                time = DateTime.Now;
+            }
+
+            public void StopPlaying ()
+            {
+                playingGame = false;
+
+                TimeSpan span = DateTime.Now.Subtract (time);
+                gameTime = gameTime.Add (span);
+            }
+        }
     }
 
-    class Profile
-    {
-        string user;
-        public string userName
-        {
-            get
-            {
-                return user;
-            }
-        }
-
-        public List<Game> games = new List<Game> ();
-
-        public Profile ( string name )
-        {
-            user = name;
-        }
-
-        public Profile ( string name, List<Game> games )
-        {
-            user = name;
-            this.games = games;
-        }
-
-        public Game FindGame ( string name )
-        {
-            Game game = games.Find (a => { return a.name == name; });
-
-            if (game == null)
-            {
-                game = new Game (name);
-                games.Add (game);
-            }
-
-            return game;
-        }
-    }
-
-    class Game
-    {
-        string gameName;
-        public string name
-        {
-            get
-            {
-                return gameName;
-            }
-        }
-
-        TimeSpan gameTime;
-        public TimeSpan timePlayed
-        {
-            get
-            {
-                return gameTime;
-            }
-        }
-        [JsonIgnore]
-        public DateTime session
-        {
-            get
-            {
-                return DateTime.Now.Subtract (gameTime);
-            }
-        }
-
-        bool playingGame;
-        [JsonIgnore]
-        public bool isPlaying
-        {
-            get
-            {
-                return playingGame;
-            }
-        }
-
-        DateTime time;
-
-        public Game ( string name )
-        {
-            gameName = name;
-        }
-
-        public Game ( string name, TimeSpan timePlayed )
-        {
-            gameName = name;
-            gameTime = timePlayed;
-        }
-
-        public void StartPlaying ()
-        {
-            playingGame = true;
-            time = DateTime.Now;
-        }
-
-        public void StopPlaying ()
-        {
-            playingGame = false;
-
-            TimeSpan span = DateTime.Now.Subtract (time);
-            gameTime = gameTime.Add (span);
-        }
-    }
 }
