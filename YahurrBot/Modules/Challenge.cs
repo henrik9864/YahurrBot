@@ -184,16 +184,33 @@ namespace YahurrBot.Modules
 
             public void StartGame ()
             {
-                game.StartGame (creator, joined);
+                string board = game.StartGame (creator, joined);
                 channel.SendMessage (creator.NicknameMention + " is starting.");
+                channel.SendMessage (board);
             }
 
             public void PlayRound ( User playing, string[] arguments )
             {
                 if (GetUser (playerPlaying) == playing)
                 {
+                    bool hasWon = game.HasWon ();
                     string toDraw = game.PlayRound (playerPlaying, arguments);
+
+                    if (toDraw == "")
+                    {
+                        channel.SendMessage ("Invalid move, please repeat.");
+                        return;
+                    }
+
                     channel.SendMessage (toDraw);
+
+                    if (hasWon)
+                    {
+                        channel.SendMessage (GetUser (playerPlaying).Mention + " has won the game!");
+
+
+                        return;
+                    }
 
                     playerPlaying++;
                     if (playerPlaying >= joined.Count + 1)
@@ -239,9 +256,9 @@ namespace YahurrBot.Modules
 
         }
 
-        public virtual void StartGame ( User creator, List<User> joined )
+        public virtual string StartGame ( User creator, List<User> joined )
         {
-
+            return "";
         }
 
         public virtual string PlayRound ( int player, string[] arguments )
@@ -249,8 +266,16 @@ namespace YahurrBot.Modules
             return "";
         }
 
+        public virtual bool HasWon ()
+        {
+            return true;
+        }
+
         public class Settings
         {
+            /// <summary>
+            /// Max amount of allowed players. (Excluding creator)
+            /// </summary>
             public int maxPlayers;
         }
     }
