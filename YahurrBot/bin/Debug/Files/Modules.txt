@@ -1,0 +1,1 @@
+﻿[{"data":[{"item":{"tesst":2,"test":{"mjes":10,"mjesi":{"mjes3":20}}},"typeName":"YahurrBot.Test1, YahurrBot, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null","name":"points"}],"name":"Henrik"}]

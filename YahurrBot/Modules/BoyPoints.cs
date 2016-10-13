@@ -83,7 +83,6 @@ namespace YahurrBot
 
         public void LoadPoints ()
         {
-
             JArray j = (JArray)JsonConvert.DeserializeObject (File.ReadAllText (path + "/Files/Saves.txt", System.Text.Encoding.UTF8));
             List<BoyStatus> newUsers = new List<BoyStatus> ();
 
@@ -101,6 +100,7 @@ namespace YahurrBot
 
         void Goodboy ( string[] commdands, MessageEventArgs e )
         {
+
             IEnumerable<User> clients = e.Channel.FindUsers (commdands[1]);
             User user = null;
             if (client != null)

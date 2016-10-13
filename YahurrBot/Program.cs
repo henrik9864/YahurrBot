@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.IO;
+using System.Windows;
 
 using Discord;
+using Discord.Audio;
 using Newtonsoft.Json;
 
 namespace YahurrBot
@@ -39,6 +41,16 @@ namespace YahurrBot
                 Module.UpdateProfile (p);
             };
 
+            client.UserJoined += ( s, p ) =>
+            {
+                Module.JoinedUser (p);
+            };
+
+            client.UsingAudio (a =>
+            {
+                a.Mode = AudioMode.Outgoing;
+            });
+
             client.ExecuteAndWait (async () =>
             {
                 Console.WriteLine ("Connect to discord...");
@@ -65,6 +77,7 @@ namespace YahurrBot
                 await Task.Run (() =>
                 {
                     int modules = Module.LoadModules (client);
+                    AppDomain.CurrentDomain.ProcessExit += new EventHandler (Module.ExitProgram); // Funker i noen tilfeller.
 
                     client.SetGame ("with jews.");
 
