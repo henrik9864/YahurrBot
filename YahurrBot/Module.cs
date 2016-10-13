@@ -19,7 +19,7 @@ namespace YahurrBot
         // Then it calls the load function
         public static int LoadModules ( Discord.DiscordClient client )
         {
-            IEnumerable<Type> types = from t in Assembly.GetExecutingAssembly ().GetTypes () where t.IsClass && typeof (Module).IsAssignableFrom (t) && t.IsAbstract == false select t;
+            IEnumerable<Type> types = from t in Assembly.GetExecutingAssembly ().GetTypes () where t.IsClass && typeof (Module).IsAssignableFrom (t) && t.IsAbstract == false && !Attribute.IsDefined (t, typeof (Attributes.IgnoreModule)) || Attribute.IsDefined (t, typeof (Attributes.LoadModule)) select t;
 
             LoadFiles ();
 
@@ -218,16 +218,16 @@ namespace YahurrBot
             return user;
         }
 
-        public Discord.User FindPlayer (Discord.Server server, string identefier)
+        public Discord.User FindPlayer ( Discord.Server server, string identefier )
         {
             identefier = identefier.Replace ("@", "");
             List<Discord.User> users = new List<Discord.User> (server.Users);
 
             Console.WriteLine (users.Count);
 
-            Discord.User user = users.Find(a => {
-
-                bool name = a.Name.ToLower() == identefier.ToLower();
+            Discord.User user = users.Find (a =>
+            {
+                bool name = a.Name.ToLower () == identefier.ToLower ();
                 bool nick = false;
                 if (a.Nickname != null)
                 {

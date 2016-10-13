@@ -6,6 +6,7 @@ using System.IO;
 using System.Windows;
 
 using Discord;
+using Discord.Audio;
 using Newtonsoft.Json;
 
 namespace YahurrBot
@@ -45,6 +46,10 @@ namespace YahurrBot
                 Module.JoinedUser (p);
             };
 
+            client.UsingAudio (a =>
+            {
+                a.Mode = AudioMode.Outgoing;
+            });
 
             client.ExecuteAndWait (async () =>
             {
@@ -73,7 +78,6 @@ namespace YahurrBot
                 {
                     int modules = Module.LoadModules (client);
                     AppDomain.CurrentDomain.ProcessExit += new EventHandler (Module.ExitProgram); // Funker i noen tilfeller.
-                    
 
                     client.SetGame ("with jews.");
 
