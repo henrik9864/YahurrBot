@@ -92,7 +92,7 @@ namespace YahurrBot.Modules
                     }
                     break;
                 default:
-                    if (commands[0].Substring(0,1) == "#")
+                    if (commands[0].Substring (0, 1) == "#")
                     {
                         game = FindGame (e.User, false, false);
                         commands[0] = commands[0].Substring (1);
@@ -111,7 +111,7 @@ namespace YahurrBot.Modules
             }
             else
             {
-                return activeGames.Find (a => { return a.creator.Name.ToLower () == user.Name.ToLower() || (!creator && a.Joined(user)); });
+                return activeGames.Find (a => { return a.creator.Name.ToLower () == user.Name.ToLower () || (!creator && a.Joined (user)); });
             }
         }
 
@@ -148,6 +148,10 @@ namespace YahurrBot.Modules
             {
                 gameCreator = creator;
                 gameType = type;
+
+                gameGame = (Game)Activator.CreateInstance (gameType);
+                game.ConfigureGame ();
+
                 this.channel = channel;
             }
 
@@ -162,7 +166,7 @@ namespace YahurrBot.Modules
                 return whitelit.Find (a => { return a.Equals (user); }) != null;
             }
 
-            public bool Joined(User user )
+            public bool Joined ( User user )
             {
                 return joined.Find (a => { return a.Equals (user); }) != null;
             }
@@ -170,7 +174,7 @@ namespace YahurrBot.Modules
             public bool JoinGame ( User user )
             {
                 User found = whitelit.Find (a => { return a == user; });
-                if (hasWhitelist && found == null)
+                if (hasWhitelist && found == null && joined.Count <= game.settings.maxPlayers)
                 {
                     return false;
                 }
@@ -180,15 +184,13 @@ namespace YahurrBot.Modules
 
             public void StartGame ()
             {
-                gameGame = (Game)Activator.CreateInstance (gameType);
-
                 game.StartGame (creator, joined);
                 channel.SendMessage (creator.NicknameMention + " is starting.");
             }
 
-            public void PlayRound (User playing, string[] arguments)
+            public void PlayRound ( User playing, string[] arguments )
             {
-                if (GetUser(playerPlaying) == playing)
+                if (GetUser (playerPlaying) == playing)
                 {
                     string toDraw = game.PlayRound (playerPlaying, arguments);
                     channel.SendMessage (toDraw);
@@ -207,7 +209,7 @@ namespace YahurrBot.Modules
                 }
             }
 
-            User GetUser(int id )
+            User GetUser ( int id )
             {
                 if (id == 0)
                 {
@@ -215,23 +217,41 @@ namespace YahurrBot.Modules
                 }
                 else
                 {
-                    return joined[id-1];
+                    return joined[id - 1];
                 }
             }
         }
-
     }
 
     class Game
     {
-        public virtual void StartGame (User creator, List<User> joined)
+        private Settings gameSettings = new Settings ();
+        public Settings settings
         {
-            
+            get
+            {
+                return gameSettings;
+            }
         }
 
-        public virtual string PlayRound (int player, string[] arguments)
+        public virtual void ConfigureGame ()
+        {
+
+        }
+
+        public virtual void StartGame ( User creator, List<User> joined )
+        {
+
+        }
+
+        public virtual string PlayRound ( int player, string[] arguments )
         {
             return "";
+        }
+
+        public class Settings
+        {
+            public int maxPlayers;
         }
     }
 }
