@@ -148,6 +148,10 @@ namespace YahurrBot.Modules
             {
                 gameCreator = creator;
                 gameType = type;
+
+                gameGame = (Game)Activator.CreateInstance (gameType);
+                game.ConfigureGame ();
+
                 this.channel = channel;
             }
 
@@ -180,8 +184,6 @@ namespace YahurrBot.Modules
 
             public void StartGame ()
             {
-                gameGame = (Game)Activator.CreateInstance (gameType);
-
                 game.StartGame (creator, joined);
                 channel.SendMessage (creator.NicknameMention + " is starting.");
             }
