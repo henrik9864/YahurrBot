@@ -81,6 +81,7 @@
   <ItemGroup>
     <Compile Include="Attributes\IgnoreModule.cs" />
     <Compile Include="Attributes\LoadModule.cs" />
+    <Compile Include="Games\ConnectFour.cs" />
     <Compile Include="Games\TestGame.cs" />
     <Compile Include="Modules\BoyPoints.cs" />
     <Compile Include="Modules\Challenge.cs" />
