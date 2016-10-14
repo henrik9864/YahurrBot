@@ -10,6 +10,10 @@ namespace YahurrBot.Modules
 {
     class UselessInteraction : Module
     {
+        public override void Load(DiscordClient client)
+        {
+            Help.addHelp("!8ball <question> ?", "Gives you an answer to your yes/no-question");
+        }
         public override void ParseCommands(String[] command, MessageEventArgs e)
         {
             switch (command[0])
@@ -43,6 +47,9 @@ namespace YahurrBot.Modules
                 case "!snowboard":
                     e.Channel.SendMessage("Did you mean !showboard?");
                     break;
+                case "!fun":
+                    e.Channel.SendMessage("https://reddit.com/r/clopclop");
+                    break;
                 default:
                     break;
             }
@@ -50,45 +57,15 @@ namespace YahurrBot.Modules
 
         String eightBall()
         {
-            String answer = "";
             int rand;
 
             Random random = new Random();
 
+            rand = random.Next(0, 100);
+            String[] answer = new String[] { "That would be true", "That would equate to false", "No", "Yes", "You are right", "You are wrong", "Simple minds would believe that to be true", "I am " + rand + "% sure about that" };
+
             rand = random.Next(0, 8);
-
-            switch (rand)
-            {
-                case 0:
-                    answer = "That would be true";
-                    break;
-                case 1:
-                    answer = "That would equate to false";
-                    break;
-                case 2:
-                    answer = "No";
-                    break;
-                case 3:
-                    answer = "Yes";
-                    break;
-                case 4:
-                    answer = "You are right";
-                    break;
-                case 5:
-                    answer = "You are wrong";
-                    break;
-                case 6:
-                    answer = "Simple minds would believe that to be true";
-                    break;
-                case 7:
-                    rand = random.Next(0, 100);
-                    answer = "I am " + rand + "% sure about that";
-                    break;
-                default:
-                    break;
-            }
-
-            return answer;
+            return answer[rand];
         }
     }
 }
