@@ -11,7 +11,13 @@ namespace YahurrBot.Modules
 {
     class Challenge : Module
     {
-        List<GameInfo> activeGames = new List<GameInfo> ();
+        static List<GameInfo> activeGames = new List<GameInfo> ();
+
+        //DONT JUDGE OKAY!
+        static void StopGame(GameInfo game )
+        {
+            activeGames.Remove (game);
+        }
 
         public override void ParseCommands ( string[] commands, MessageEventArgs e )
         {
@@ -91,6 +97,13 @@ namespace YahurrBot.Modules
                         e.Channel.SendMessage ("Game not found.");
                     }
                     break;
+                case "!stop":
+                    game = FindGame (e.User, false, true);
+                    activeGames.Remove (game);
+                    break;
+                case "!listgames":
+                    
+                    break;
                 default:
                     if (commands[0].Substring (0, 1) == "#")
                     {
@@ -113,6 +126,11 @@ namespace YahurrBot.Modules
             {
                 return activeGames.Find (a => { return a.creator.Name.ToLower () == user.Name.ToLower () || (!creator && a.Joined (user)); });
             }
+        }
+
+        GameInfo FindGame ( Game game )
+        {
+            return activeGames.Find (a => { return a.game == game; });
         }
 
         class GameInfo
@@ -138,8 +156,10 @@ namespace YahurrBot.Modules
             List<User> joined = new List<User> ();
 
             Channel channel;
+            Message latestMessage;
             Type gameType;
             int playerPlaying;
+            bool stopped;
 
             public bool hasWhitelist;
             List<User> whitelit = new List<User> ();
@@ -186,12 +206,15 @@ namespace YahurrBot.Modules
             {
                 string board = game.StartGame (creator, joined);
                 channel.SendMessage (creator.NicknameMention + " is starting.");
-                channel.SendMessage (board);
+                Task.Run (async () =>
+                {
+                    latestMessage = await channel.SendMessage (board);
+                });
             }
 
             public void PlayRound ( User playing, string[] arguments )
             {
-                if (GetUser (playerPlaying) == playing)
+                if (GetUser (playerPlaying) == playing && !stopped)
                 {
                     string toDraw = game.PlayRound (playerPlaying, arguments);
                     bool hasWon = game.HasWon ();
@@ -202,14 +225,25 @@ namespace YahurrBot.Modules
                         return;
                     }
 
-                    channel.SendMessage (toDraw);
+                    if (latestMessage != null)
+                    {
+                        channel.DeleteMessages (new Message[] { latestMessage });
+                    }
 
                     if (hasWon)
                     {
-                        channel.SendMessage (GetUser (playerPlaying).Mention + " has won the game!");
+                        channel.SendMessage (toDraw + Environment.NewLine + GetUser (playerPlaying).Mention + " has won the game!");
 
-
+                        Challenge.StopGame (this);
+                        stopped = true;
                         return;
+                    }
+                    else
+                    {
+                        Task.Run (async () =>
+                        {
+                            latestMessage = await channel.SendMessage (toDraw + Environment.NewLine + GetUser (playerPlaying).Mention + "'s turn.");
+                        });
                     }
 
                     playerPlaying++;
@@ -217,8 +251,6 @@ namespace YahurrBot.Modules
                     {
                         playerPlaying = 0;
                     }
-
-                    channel.SendMessage (GetUser (playerPlaying).Mention + "'s turn.");
                 }
                 else
                 {

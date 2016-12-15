@@ -1,1 +1,1 @@
-﻿[{"userName":"Henrik","points":1,"toSend":0},{"userName":"mbremyk","points":2,"toSend":1},{"userName":"Zantox","points":1,"toSend":2},{"userName":"Edd601","points":1,"toSend":2}]
+﻿[{"userName":"Henrik","points":1,"toSend":2},{"userName":"mbremyk","points":2,"toSend":0},{"userName":"Zantox","points":1,"toSend":1},{"userName":"Edd601","points":4,"toSend":2}]
