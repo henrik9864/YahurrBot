@@ -13,6 +13,7 @@ namespace YahurrBot.Modules
         public override void Load(DiscordClient client)
         {
             Help.addHelp("!8ball <question> ?", "Gives you an answer to your yes/no-question");
+            Help.addHelp("!role <username>", "WIP, but hey, YahurrBot is having fun");
         }
         public override void ParseCommands(String[] command, MessageEventArgs e)
         {
