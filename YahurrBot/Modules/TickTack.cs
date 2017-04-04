@@ -184,19 +184,19 @@ namespace YahurrBot.Games
             }
         }
 
-        bool sqareTaken;
+        bool squareTaken;
         public bool taken
         {
             get
             {
-                return sqareTaken;
+                return squareTaken;
             }
         }
 
         public void Take ( char symbol )
         {
             squareSymbol = symbol;
-            sqareTaken = true;
+            squareTaken = true;
         }
     }
 }
